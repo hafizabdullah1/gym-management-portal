@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-4xl font-semibold my-8 dark:text-neutral-100 ml-16">
+    Gym Management Portal
+</h1>
+<h3 class="text-2xl font-semibold my-8 dark:text-neutral-100 ml-16">
+    Update Member
+</h3>
+
+<form class="font-[sans-serif] max-w-5xl mx-auto" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="grid sm:grid-cols-2 gap-6">
+        {% for field in form %}
+        <div class="relative flex items-center ">
+            {% if field.field.widget.input_type == 'text' %}
+            <div class="mb-6 w-full">
+                <label htmlFor="{{ field.name }}" class="block text-sm font-medium text-gray-300">{{ field.name }}
+                    <span class="text-red-500">*</span></label>
+                <input type="text" id="{{ field.name }}" placeholder="{{ field.label }}" name="{{ field.name }}"
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-[#5D5DEE] bg-[#2C3A52] border-none text-gray-300" />
+            </div>
+            {% elif field.field.widget.input_type == 'number' %}
+            <div class="mb-6 w-full">
+                <label htmlFor="{{ field.name }}" class="block text-sm font-medium text-gray-300">{{ field.name }}
+                    <span class="text-red-500">*</span></label>
+                <input type="number" id="{{ field.name }}" placeholder="{{ field.label }}" name="{{ field.name }}"
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-[#5D5DEE] bg-[#2C3A52] border-none text-gray-300 mt-8" />
+            </div>
+            {% elif field.field.widget.input_type == 'date' %}
+            <div class="mb-6 w-full">
+                hello
+                <label htmlFor="{{ field.name }}" class="block text-sm font-medium text-gray-300">{{ field.name }}
+                    <span class="text-red-500">*</span></label>
+                <input type="date" id="{{ field.name }}" placeholder="{{ field.label }}" name="{{ field.name }}"
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-[#5D5DEE] bg-[#2C3A52] border-none text-gray-300" />
+            </div>
+            {% elif field.field.widget.input_type == 'file' %}
+            <div class="mb-6 w-full">
+               <div class="flex justify-between items-center">
+                <label htmlFor="{{ field.name }}" class="block text-sm font-medium text-gray-300">{{ field.name }}
+                    <span class="text-red-500">*</span></label>
+                    <img src="{{field.value.url}}" class="rounded-full h-12 w-12 shadow object-cover" alt="img here">
+               </div>
+                <input type="file" id="{{ field.name }}" placeholder="{{ field.label }}" name="{{ field.name }}"
+                    value="{{ field.value | default_if_none:'' }}"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-[#5D5DEE] bg-[#2C3A52] border-none text-gray-300" />
+            </div>
+            {% elif field.field.widget.input_type == 'checkbox' %}
+            <label for="status" class="capitalize text-white">{{ field.name }}: &nbsp;</label>
+            <input id="status" type="checkbox" name="{{ field.name }}" {% if field.value %}checked{% endif %}
+                class="w-[18px] h-[18px] bg-white text-black border-b-2 focus:border-[#007bff] outline-none" />
+            {% else %}
+           <div class="mb-6 w-full">
+                hello
+                <label htmlFor="{{ field.name }}" class="block text-sm font-medium text-gray-300">{{ field.name }}
+                    <span class="text-red-500">*</span></label>
+                <input type="date" id="{{ field.name }}" placeholder="{{ field.label }}" name="{{ field.name }}"
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-[#5D5DEE] bg-[#2C3A52] border-none text-gray-300" />
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="flex justify-center">
+        <button type="submit"
+            class="bg-[#5D5DEE] text-white px-8 py-3 rounded-md hover:bg-opacity-90 focus:outline-none focus:bg-opacity-90">Update</button>
+    </div>
+</form>
+
+
+
+{% endblock %}

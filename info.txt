@@ -1,0 +1,10 @@
+Field Lookup Syntax: The double underscore (__) syntax is used to specify lookups in Django's ORM.
+icontains: This specific lookup checks if the value on the right side is contained within the value of the field on the left side, case insensitively.
+
+JsonResponse
+
+JsonResponse is a subclass of Django's HttpResponse that is specifically designed to return JSON data. It automatically serializes Python dictionaries into JSON format, sets the appropriate Content-Type header to application/json, and ensures that the response is properly formatted for AJAX requests expecting JSON. While you could use HttpResponse with manual JSON serialization and header settings, JsonResponse simplifies this process and is the preferred method for returning JSON data in Django.
+
+QuerySet
+
+A QuerySet in Django returns a collection of model instances (objects) that match the given query parameters. This collection can be iterated over, indexed, sliced, or further filtered and modified using additional QuerySet methods. The objects within a QuerySet are instances of the model class specified in the query.

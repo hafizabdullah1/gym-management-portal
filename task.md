@@ -2,7 +2,8 @@ https://awake-attack-6b0.notion.site/Gym-APP-269b34b5e6de4422af73de6273f5465e
 
 # Gym APP
 
-**Synopsis**
+<!-- **Synopsis** -->
+### Synposis
 
 We need a Gym management portal for gym manager so he can enter members, manage their deadlines for fee and overall reports. Detail requirements are shared in next sections
 

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <h1 class="text-4xl font-semibold my-8 dark:text-neutral-100">Reports</h1>
+    <form method="get" class="mb-6">
+        <label for="start_date" class="mr-2">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}" class="mr-4">
+        <label for="end_date" class="mr-2">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}" class="mr-4">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Generate Report</button>
+    </form>
+
+    <div class="mb-4">
+        <h2 class="text-2xl font-semibold">Total Revenue: ${{ total_revenue }}</h2>
+        <h3 class="text-xl font-semibold">Total Members: {{ total_members }}</h3>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white dark:border-none border border-gray-300 dark:bg-[#2C3A52]">
+            <thead class="dark:text-white text-gray-700 dark:bg-[#1E293B] border-neutral-600 bg-gray-200">
+                <tr>
+                    <th class="px-6 py-3">Name</th>
+                    <th class="px-6 py-3">Contact No.</th>
+                    <th class="px-6 py-3">Fee Amount</th>
+                    <th class="px-6 py-3">Fee Date</th>
+                    <th class="px-6 py-3">Status</th>
+                </tr>
+            </thead>
+            <tbody class="dark:text-neutral-400">
+                {% for member in members %}
+                <tr class="text-sm md:text-base border-b dark:border-[#1E293B] dark:border-b dark:hover:bg-[#1E293B] hover:bg-gray-100 capitalize">
+                    <td class="px-6 py-3 text-center">{{ member.name }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.phone_number }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.fee_amount }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.fee_date }}</td>
+                    <td class="px-6 py-3 text-center {% if member.status %} text-green-500 {% else %} text-red-500 {% endif %}">
+                        {% if member.status %}
+                        Active
+                        {% else %}
+                        Non Active
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

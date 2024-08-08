@@ -1,11 +1,154 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %} Members Details page {% endblock %} {% block content %}
 
-{% block title %} Home page {% endblock %}
+<div class="p-6">
+    <div class="flex  items-center justify-between">
+        <h1 class="text-4xl font-semibold my-8 dark:text-neutral-100">
+            Gym Management Portal
+        </h1>
+        <a href="{% url 'add_member' %}">
+            <button
+                class='px-4 py-2 relative after:transition-all hover:after:left-0 after:h-full after:w-full after:content-[""] after:bg-[#5D5DEE] after:absolute  z-20 after:top-0 hover:text-neutral-100 dark:text-neutral-100 dark:bg-[#2C3A52] after:-z-10 mr-4 bg-gray-300 text-gray-700 overflow-hidden bg-[#5D5DEE] text-white after:left-0 group'>
+                Add <i class="fa-solid fa-plus text-lg ml-2 group-hover:rotate-90 duration-200"></i>
+            </button>
+        </a>
+    </div>
+    <div class="md:w-64">
+        <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+            <input type="search" id="search-input"
+                class="bg-[#2C3A52] text-neutral-300 border-none relative m-0 -mr-0.5 block min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-[#5D5DEE] focus:text-neutral-300 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+                placeholder="Search" />
+        </div>
+    </div>
+    <div class="flex mb-8">
+        <a href="{% url 'home' %}">
+            <button
+                class='px-4 py-2 relative after:transition-all hover:after:left-0 after:h-full after:w-full after:content-[""] after:bg-[#5D5DEE] after:absolute  z-20 after:top-0 hover:text-neutral-100 dark:text-neutral-100 dark:bg-[#2C3A52] after:-z-10 mr-4 bg-gray-300 text-gray-700 overflow-hidden bg-[#5D5DEE] text-white after:left-0'>
+                All Members
+            </button>
+        </a>
+        <a href="{% url 'due_members' %}">
+            <button
+            class='px-4 py-2 relative after:transition-all hover:after:left-0 after:h-full after:w-full after:content-[""] after:bg-red-500 after:absolute  z-20 after:top-0 hover:text-neutral-100 dark:text-neutral-100 dark:bg-[#2C3A52] after:-z-10 mr-4 bg-gray-300 text-gray-700 overflow-hidden bg-red-500 text-white after:-left-full'>
+            Due date passed
+        </button>
+        </a>
+    </div>
+
+    <div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white dark:border-none border border-gray-300 dark:bg-[#2C3A52]">
+                <thead class="dark:text-white text-gray-700 dark:bg-[#1E293B] border-neutral-600 bg-gray-200">
+                    <tr>
+                        <th class="px-6 py-3">Image</th>
+                        <th class="px-6 py-3">Name</th>
+                        <th class="px-6 py-3">Contact No.</th>
+                        <th class="px-6 py-3">Fee Amount</th>
+                        <th class="px-6 py-3">Fee Date</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="dark:text-neutral-400" id="search-results">
+                    {% if members %}
+                    {% for member in members %}
+                    <tr
+                        class="text-sm md:text-base border-b dark:border-[#1E293B] dark:border-b dark:hover:bg-[#1E293B] hover:bg-gray-100 capitalize">
+                        <td class="px-6 py-3 text-center sm:w-10 w-8 h-16 rounded-md overflow-hidden">
+                            <img src="{{member.image.url}}" class="h-full w-full scale-125 object-cover" alt="image" />
+                        </td>
+                        <td class="px-6 py-3 text-center">{{member.name}}</td>
+                        <td class="px-6 py-3 text-center">{{member.phone_number}}</td>
+                        <td class="px-6 py-3 text-center">{{member.fee_amount}}</td>
+                        <td class="px-6 py-3 text-center">{{member.fee_date}}</td>
+                        <td
+                            class="px-6 py-3 text-center {% if member.status %} text-green-500 {% else %} text-red-500 {% endif %}">
+                            {% if member.status %}
+                            active
+                            {% else %}
+                            non active
+                            {% endif %}
+
+                        </td>
+                        <td class="px-6 py-3 text-center">
+                            <a href="{% url 'update_member' id=member.id %}">
+                                <button value="edit"
+                                    class="bg-gray-200 dark:bg-[#0E1622] dark:hover:bg-[#5D5DEE] p-2.5 rounded-full hover:bg-[#5D5DEE] text-[#5D5DEE] hover:text-white mr-4">
+                                    <i class="fas fa-pencil pointer-events-none"></i>
+                                </button>
+                            </a>
+                            <a href="{% url 'delete_member' id=member.id %}">
+                                <button value="delete"
+                                    class="bg-gray-200 dark:bg-[#0E1622] hover:bg-red-500 p-2.5 rounded-full dark:hover:bg-red-500 text-red-500 hover:text-white">
+                                    <i class="fas fa-trash pointer-events-none"></i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
-{% block content %}
+<script>
 
-<h1>Gym Management Portal</h1>
+    $(document).ready(() => {
+        $('#search-input').on('keyup', () => {
+            var query = $('#search-input').val();
 
+            $.ajax({
+                type: "GET",
+                url: "{% url 'search_members' %}",
+                data: {
+                    query: query,
+                },
+                dataType: 'json',
+                success: (json) => {
+                    $('#search-results').empty();
+                    const results = json.members.map((member) => {
+                        return `
+                     <tr
+                        class="text-sm md:text-base border-b dark:border-[#1E293B] dark:border-b dark:hover:bg-[#1E293B] hover:bg-gray-100 capitalize">
+                        <td class="px-6 py-3 text-center sm:w-10 w-8 h-16 rounded-md overflow-hidden">
+                            <img src=${member.image_url} class="h-full w-full scale-125 object-cover" alt="image" />
+                        </td>
+                        <td class="px-6 py-3 text-center">${member.name}</td>
+                        <td class="px-6 py-3 text-center">${member.phone_number}</td>
+                        <td class="px-6 py-3 text-center">${member.fee_amount}</td>
+                        <td class="px-6 py-3 text-center">${member.fee_date}</td>
+                        <td class="px-6 py-3 text-center ${member.status ? 'text-green-500' : 'text-red-500'}">
+                              ${member.status ? 'Active' : 'Non active'}
+                        </td >
+
+                            <td class="px-6 py-3 text-center">
+                                <a href="/update_member/${member.id}/">
+                                    <button value="edit"
+                                        class="bg-gray-200 dark:bg-[#0E1622] dark:hover:bg-[#5D5DEE] p-2.5 rounded-full hover:bg-[#5D5DEE] text-[#5D5DEE] hover:text-white mr-4">
+                                        <i class="fas fa-pencil pointer-events-none"></i>
+                                    </button>
+                                </a>
+                                <a href="/delete_member/${member.id}/">
+                                    <button value="delete"
+                                        class="bg-gray-200 dark:bg-[#0E1622] hover:bg-red-500 p-2.5 rounded-full dark:hover:bg-red-500 text-red-500 hover:text-white">
+                                        <i class="fas fa-trash pointer-events-none"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr >
+                        `
+                    }).join('')
+                    $('#search-results').html(results.length > 0 ? `${results}` : '<p>No members found.</p>');
+                },
+                error: (xhr) => {
+                    console.log(xhr.responseText);
+                }
+            })
+        })
+    })
+</script>
 
 {% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Due Members{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <h1 class="text-4xl font-semibold my-8 dark:text-neutral-100">Members with Due Fees</h1>
+    
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white dark:border-none border border-gray-300 dark:bg-[#2C3A52]">
+            <thead class="dark:text-white text-gray-700 dark:bg-[#1E293B] border-neutral-600 bg-gray-200">
+                <tr>
+                    <th class="px-6 py-3">Image</th>
+                    <th class="px-6 py-3">Name</th>
+                    <th class="px-6 py-3">Contact No.</th>
+                    <th class="px-6 py-3">Fee Amount</th>
+                    <th class="px-6 py-3">Fee Date</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="dark:text-neutral-400">
+                {% if due_members %}
+                {% for member in due_members %}
+                <tr class="text-sm md:text-base border-b dark:border-[#1E293B] dark:border-b dark:hover:bg-[#1E293B] hover:bg-gray-100 capitalize">
+                    <td class="px-6 py-3 text-center sm:w-10 w-8 h-16 rounded-md overflow-hidden">
+                        <img src="{{ member.image.url }}" class="h-full w-full scale-125 object-cover" alt="image" />
+                    </td>
+                    <td class="px-6 py-3 text-center">{{ member.name }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.phone_number }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.fee_amount }}</td>
+                    <td class="px-6 py-3 text-center">{{ member.fee_date }}</td>
+                    <td class="px-6 py-3 text-center {% if member.status %} text-green-500 {% else %} text-red-500 {% endif %}">
+                        {% if member.status %}
+                        Active
+                        {% else %}
+                        Non Active
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <a href="{% url 'update_member' id=member.id %}">
+                            <button value="edit" class="bg-gray-200 dark:bg-[#0E1622] dark:hover:bg-[#5D5DEE] p-2.5 rounded-full hover:bg-[#5D5DEE] text-[#5D5DEE] hover:text-white mr-4">
+                                <i class="fas fa-pencil pointer-events-none"></i>
+                            </button>
+                        </a>
+                        <a href="{% url 'delete_member' id=member.id %}">
+                            <button value="delete" class="bg-gray-200 dark:bg-[#0E1622] hover:bg-red-500 p-2.5 rounded-full dark:hover:bg-red-500 text-red-500 hover:text-white">
+                                <i class="fas fa-trash pointer-events-none"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <p class="m-4 text-green-500 itallic">No Member have dues..</p>
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
